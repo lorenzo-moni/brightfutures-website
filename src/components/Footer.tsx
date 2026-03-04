@@ -21,8 +21,8 @@ export default function Footer() {
               <span>contact@brightfutures.ch</span>
             </div>
             <div className="flex items-center gap-4">
-              <span>Lorenzo: +39 342 156 6460</span>
-              <span>Sebastian: +41 76 768 2316</span>
+              <span>Lorenzo</span>
+              <span>Sebastian</span>
             </div>
           </div>
         </div>
