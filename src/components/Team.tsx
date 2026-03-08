@@ -19,7 +19,7 @@ const members = [
   {
     name: "Adam Hoško",
     role: "Legal Lead",
-    description: "ChE MSc @ EPFL",
+    description: "Legal Assistant @ SMPL · ChE MSc @ EPFL",
     tags: ["Legal Expertise", "EPFL Network"],
     accent: "purple" as const,
     photo: "/moni-profile-pic.jpeg",
@@ -70,36 +70,19 @@ export default function Team() {
                 <div
                   className={`relative ${a.card} backdrop-blur-sm rounded-3xl p-8 border ${a.border} transition-all hover:scale-105 duration-300 h-full flex flex-col items-center text-center`}
                 >
-                  {/* Hexagon photo */}
+                  {/* Circle photo */}
                   <div
-                    className="mb-6"
-                    style={{ filter: a.hexGlow }}
+                    className="mb-6 w-56 h-56 rounded-full overflow-hidden"
+                    style={{
+                      border: `3px solid ${a.hexBorder}`,
+                      filter: a.hexGlow,
+                    }}
                   >
-                    <svg width="160" height="184" viewBox="0 0 160 184" fill="none">
-                      <defs>
-                        <clipPath id={`hex-${member.name.replace(/\s/g, "")}`}>
-                          <polygon points="80,3 157,43 157,141 80,181 3,141 3,43" />
-                        </clipPath>
-                      </defs>
-                      {/* Border */}
-                      <polygon
-                        points="80,3 157,43 157,141 80,181 3,141 3,43"
-                        fill="none"
-                        stroke={a.hexBorder}
-                        strokeWidth="2.5"
-                        opacity="0.8"
-                      />
-                      {/* Photo clipped to hexagon */}
-                      <image
-                        href={member.photo}
-                        x="3"
-                        y="3"
-                        width="154"
-                        height="178"
-                        preserveAspectRatio="xMidYMid slice"
-                        clipPath={`url(#hex-${member.name.replace(/\s/g, "")})`}
-                      />
-                    </svg>
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      className="w-full h-full object-cover object-top"
+                    />
                   </div>
 
                   <h3 className={`text-2xl font-bold mb-1 heading-font ${a.role}`}>

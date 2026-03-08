@@ -67,9 +67,9 @@ export default function Hero() {
             </div>
             <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-500/50 transition-colors">
               <div className="text-4xl font-black gradient-text-yellow mb-2 heading-font">
-                €30M
+                € 50K+ 
               </div>
-              <div className="text-sm text-gray-400">Swiss SOM</div>
+              <div className="text-sm text-gray-400">Lost per bad hire</div>
             </div>
             <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-purple-500/50 transition-colors">
               <div className="text-4xl font-black gradient-text-purple mb-2 heading-font">
