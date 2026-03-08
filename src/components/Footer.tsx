@@ -19,7 +19,7 @@ export default function Footer() {
               className="flex items-center text-gray-400 hover:text-purple-400 transition-colors"
             >
               <Mail size={20} className="mr-2" />
-              contact@brightfutures.ch
+              contact@brightfutures.app
             </a>
           </div>
         </div>
