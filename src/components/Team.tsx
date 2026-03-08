@@ -1,85 +1,127 @@
+
+const members = [
+  {
+    name: "Lorenzo Moni",
+    role: "Vetting Lead",
+    description: "Incoming SWE Intern @ Bloomberg · CS MSc @ EPFL",
+    tags: ["Data Science & AI", "EPFL Network", "HR Experience"],
+    accent: "purple" as const,
+    photo: "/moni-profile-pic.jpeg",
+  },
+  {
+    name: "Sebastian Zlabinger",
+    role: "Risk Management Lead",
+    description: "Consultant Intern @ BCG · MTE MSc @ EPFL",
+    tags: ["Sponsorship Experience", "EPFL Network", "HR Processes"],
+    accent: "yellow" as const,
+    photo: "/zlabinger-profile-pic.png",
+  },
+  {
+    name: "Adam Hoško",
+    role: "Legal Lead",
+    description: "ChE MSc @ EPFL",
+    tags: ["Legal Expertise", "EPFL Network"],
+    accent: "purple" as const,
+    photo: "/moni-profile-pic.jpeg",
+  },
+];
+
+const accentMap = {
+  purple: {
+    hexBorder: "#8b5cf6",
+    hexGlow: "drop-shadow(0 0 16px rgba(139,92,246,0.6))",
+    border: "border-purple-500/30 hover:border-purple-500/60",
+    glow: "gradient-bg-purple",
+    card: "bg-gradient-to-br from-purple-900/50 to-purple-950/30",
+    tag: "bg-purple-500/20 text-purple-300 border border-purple-500/30",
+    role: "gradient-text-purple",
+  },
+  yellow: {
+    hexBorder: "#fbbf24",
+    hexGlow: "drop-shadow(0 0 16px rgba(251,191,36,0.6))",
+    border: "border-yellow-500/30 hover:border-yellow-500/60",
+    glow: "gradient-bg-yellow",
+    card: "bg-gradient-to-br from-yellow-900/50 to-yellow-950/30",
+    tag: "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30",
+    role: "gradient-text-yellow",
+  },
+};
+
 export default function Team() {
   return (
-    <section id="team" className="py-24 relative">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-1 gradient-bar rounded" />
-          <span className="text-sm text-gray-500 uppercase tracking-widest">
-            Our Team
-          </span>
-        </div>
-
-        <h2 className="text-4xl md:text-5xl font-bold mb-16">
-          Why <span className="gradient-text">Us</span>
+    <section id="team" className="py-24 bg-gradient-to-b from-black to-purple-950/20">
+      <div className="container mx-auto px-6">
+        <h2 className="text-5xl md:text-6xl font-black text-center mb-6 heading-font">
+          Meet the <span className="gradient-text-purple">Team</span>
         </h2>
+        <p className="text-xl text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+          Three EPFL students on a mission to bridge the talent gap between ambitious
+          students and forward-thinking companies.
+        </p>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* Lorenzo */}
-          <div className="card-glass rounded-2xl p-8 text-center border border-purple/20">
-            <div className="w-24 h-24 rounded-2xl bg-purple/20 border-2 border-purple mx-auto mb-6 flex items-center justify-center">
-              <span className="text-3xl font-bold text-purple-light">LM</span>
-            </div>
-            <h3 className="text-xl font-bold mb-1">Lorenzo Moni</h3>
-            <p className="text-purple-light text-sm mb-1">
-              Vetting Lead @ BrightFutures
-            </p>
-            <p className="text-gray-500 text-sm mb-4">
-              CS MSc @ EPFL &middot; Full Stack Developer
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              <span className="px-3 py-1 bg-purple/10 text-purple-light rounded-full text-xs">
-                Data Science & AI
-              </span>
-              <span className="px-3 py-1 bg-purple/10 text-purple-light rounded-full text-xs">
-                EPFL Network
-              </span>
-              <span className="px-3 py-1 bg-purple/10 text-purple-light rounded-full text-xs">
-                HR Experience
-              </span>
-            </div>
-          </div>
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {members.map((member) => {
+            const a = accentMap[member.accent];
+            return (
+              <div key={member.name} className="group relative h-full">
+                <div
+                  className={`absolute inset-0 ${a.glow} rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity`}
+                ></div>
+                <div
+                  className={`relative ${a.card} backdrop-blur-sm rounded-3xl p-8 border ${a.border} transition-all hover:scale-105 duration-300 h-full flex flex-col items-center text-center`}
+                >
+                  {/* Hexagon photo */}
+                  <div
+                    className="mb-6"
+                    style={{ filter: a.hexGlow }}
+                  >
+                    <svg width="160" height="184" viewBox="0 0 160 184" fill="none">
+                      <defs>
+                        <clipPath id={`hex-${member.name.replace(/\s/g, "")}`}>
+                          <polygon points="80,3 157,43 157,141 80,181 3,141 3,43" />
+                        </clipPath>
+                      </defs>
+                      {/* Border */}
+                      <polygon
+                        points="80,3 157,43 157,141 80,181 3,141 3,43"
+                        fill="none"
+                        stroke={a.hexBorder}
+                        strokeWidth="2.5"
+                        opacity="0.8"
+                      />
+                      {/* Photo clipped to hexagon */}
+                      <image
+                        href={member.photo}
+                        x="3"
+                        y="3"
+                        width="154"
+                        height="178"
+                        preserveAspectRatio="xMidYMid slice"
+                        clipPath={`url(#hex-${member.name.replace(/\s/g, "")})`}
+                      />
+                    </svg>
+                  </div>
 
-          {/* Sebastian */}
-          <div className="card-glass rounded-2xl p-8 text-center border border-gold/20">
-            <div className="w-24 h-24 rounded-2xl bg-gold/20 border-2 border-gold mx-auto mb-6 flex items-center justify-center">
-              <span className="text-3xl font-bold text-gold-light">SZ</span>
-            </div>
-            <h3 className="text-xl font-bold mb-1">Sebastian Zlabinger</h3>
-            <p className="text-gold-light text-sm mb-1">
-              Risk Management Lead @ BrightFutures
-            </p>
-            <p className="text-gray-500 text-sm mb-4">
-              MTE MSc @ EPFL &middot; Solution Engineer
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              <span className="px-3 py-1 bg-gold/10 text-gold-light rounded-full text-xs">
-                Sponsorship Experience
-              </span>
-              <span className="px-3 py-1 bg-gold/10 text-gold-light rounded-full text-xs">
-                EPFL Network
-              </span>
-              <span className="px-3 py-1 bg-gold/10 text-gold-light rounded-full text-xs">
-                HR Processes
-              </span>
-            </div>
-          </div>
-        </div>
+                  <h3 className={`text-2xl font-bold mb-1 heading-font ${a.role}`}>
+                    {member.name}
+                  </h3>
+                  <p className="text-white font-semibold mb-1">{member.role}</p>
+                  <p className="text-gray-400 text-sm mb-6">{member.description}</p>
 
-        {/* Shared skills */}
-        <div className="card-glass rounded-2xl p-6 max-w-md mx-auto">
-          <h4 className="text-sm font-semibold text-gray-400 text-center mb-4">
-            Shared Expertise
-          </h4>
-          <div className="space-y-3">
-            {["Data Science & AI", "Access to EPFL Talent", "Direct Experience with Sponsorship", "Experience in HR Processes"].map((skill) => (
-              <div key={skill} className="flex items-center gap-3">
-                <svg className="w-5 h-5 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="text-gray-300 text-sm">{skill}</span>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {member.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${a.tag}`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

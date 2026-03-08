@@ -1,29 +1,25 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Problem from "@/components/Problem";
-import Solution from "@/components/Solution";
+import ValueProps from "@/components/ValueProps";
 import HowItWorks from "@/components/HowItWorks";
+import ContactForm from "@/components/ContactForm";
 import Testimonials from "@/components/Testimonials";
-import CompanyForm from "@/components/CompanyForm";
-import StudentForm from "@/components/StudentForm";
-import Team from "@/components/Team";
 import Footer from "@/components/Footer";
+import Team from "@/components/Team";
 
 export default function Home() {
   return (
-    <>
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />
       <main>
         <Hero />
-        <Problem />
-        <Solution />
+        <ValueProps />
         <HowItWorks />
         <Testimonials />
-        <CompanyForm />
-        <StudentForm />
         <Team />
+        <ContactForm />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

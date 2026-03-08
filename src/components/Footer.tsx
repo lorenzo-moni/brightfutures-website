@@ -1,34 +1,31 @@
+import { Mail } from "lucide-react";
+
 export default function Footer() {
   return (
-    <footer className="border-t border-white/5 py-12">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <span className="text-2xl font-bold gradient-text">
-              BrightFutures
-            </span>
-            <span className="text-white text-2xl font-bold">.</span>
-            <p className="text-gray-500 text-sm mt-1">
-              Bridging Ambition and Industry Demand.
-            </p>
+    <footer className="py-12 bg-gradient-to-b from-black to-purple-950/50 border-t border-white/10">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-6 md:mb-0">
+            <h3 className="text-3xl font-black heading-font">
+              <span className="gradient-text-purple">Bright</span>
+              <span className="gradient-text-yellow">Futures</span>
+            </h3>
+            <p className="text-gray-400 mt-2">Bridging Ambition and Industry Demand</p>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center gap-6 text-sm text-gray-500">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <span>contact@brightfutures.ch</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span>Lorenzo</span>
-              <span>Sebastian</span>
-            </div>
+          <div className="flex gap-6 items-center">
+            <a
+              href="mailto:contact@brightfutures.ch"
+              className="flex items-center text-gray-400 hover:text-purple-400 transition-colors"
+            >
+              <Mail size={20} className="mr-2" />
+              contact@brightfutures.ch
+            </a>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-white/5 text-center text-gray-600 text-xs">
-          &copy; {new Date().getFullYear()} BrightFutures. All rights reserved.
+        <div className="mt-8 pt-8 border-t border-white/10 text-center text-gray-500 text-sm">
+          <p>&copy; {new Date().getFullYear()} BrightFutures. Building the future of talent acquisition.</p>
         </div>
       </div>
     </footer>

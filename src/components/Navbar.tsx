@@ -1,93 +1,102 @@
 "use client";
 
 import { useState } from "react";
+import { Menu, X, Briefcase, GraduationCap } from "lucide-react";
+
+const links = [
+  { label: "Solution", href: "#solution" },
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "Team", href: "#team" },
+];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-bg-primary/80 backdrop-blur-md border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
-        <a href="#" className="text-xl font-bold">
-          <span className="gradient-text">BrightFutures</span>
-          <span className="text-white">.</span>
-        </a>
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <div className="mx-auto max-w-7xl px-6 pt-4">
+        <nav className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3 flex items-center justify-between">
+          {/* Logo */}
+          <a href="#" className="heading-font text-2xl font-black">
+            <span className="gradient-text-purple">Bright</span>
+            <span className="gradient-text-yellow">Futures</span>
+            <span className="text-white">.</span>
+          </a>
 
-        {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-8 text-sm text-gray-300">
-          <a href="#problem" className="hover:text-white transition">
-            Problem
-          </a>
-          <a href="#solution" className="hover:text-white transition">
-            Solution
-          </a>
-          <a href="#how-it-works" className="hover:text-white transition">
-            How It Works
-          </a>
-          <a href="#team" className="hover:text-white transition">
-            Team
-          </a>
-          <a
-            href="#companies"
-            className="px-4 py-2 bg-purple text-white rounded-lg text-sm font-medium hover:bg-purple-dark transition"
-          >
-            For Companies
-          </a>
-          <a
-            href="#students"
-            className="px-4 py-2 bg-gold text-black rounded-lg text-sm font-medium hover:bg-gold-light transition"
-          >
-            For Students
-          </a>
-        </div>
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-8">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-gray-400 hover:text-white transition-colors text-sm font-medium"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden text-white"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            {open ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
+          {/* Desktop CTAs */}
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="#register"
+              className="px-4 py-2 gradient-bg-purple rounded-xl font-bold text-sm hover:scale-105 transition-transform duration-200 glow-purple"
+            >
+              <Briefcase className="inline-block mr-1 mb-0.5" size={14} />
+              Companies
+            </a>
+            <a
+              href="#register"
+              className="px-4 py-2 gradient-bg-yellow rounded-xl font-bold text-sm hover:scale-105 transition-transform duration-200 glow-yellow text-black"
+            >
+              <GraduationCap className="inline-block mr-1 mb-0.5" size={14} />
+              Students
+            </a>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden text-gray-400 hover:text-white transition-colors"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </nav>
+
+        {/* Mobile menu */}
+        {open && (
+          <div className="md:hidden mt-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 flex flex-col gap-4">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="text-gray-300 hover:text-white transition-colors text-sm font-medium py-1"
+              >
+                {l.label}
+              </a>
+            ))}
+            <div className="flex gap-3 pt-2 border-t border-white/10">
+              <a
+                href="#register"
+                onClick={() => setOpen(false)}
+                className="flex-1 text-center py-2 gradient-bg-purple rounded-xl font-bold text-sm glow-purple"
+              >
+                Companies
+              </a>
+              <a
+                href="#register"
+                onClick={() => setOpen(false)}
+                className="flex-1 text-center py-2 gradient-bg-yellow rounded-xl font-bold text-sm glow-yellow text-black"
+              >
+                Students
+              </a>
+            </div>
+          </div>
+        )}
       </div>
-
-      {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden bg-bg-primary/95 backdrop-blur-md border-t border-white/5 px-6 py-4 space-y-4">
-          <a href="#problem" className="block text-gray-300 hover:text-white" onClick={() => setOpen(false)}>
-            Problem
-          </a>
-          <a href="#solution" className="block text-gray-300 hover:text-white" onClick={() => setOpen(false)}>
-            Solution
-          </a>
-          <a href="#how-it-works" className="block text-gray-300 hover:text-white" onClick={() => setOpen(false)}>
-            How It Works
-          </a>
-          <a href="#team" className="block text-gray-300 hover:text-white" onClick={() => setOpen(false)}>
-            Team
-          </a>
-          <a
-            href="#companies"
-            className="block px-4 py-2 bg-purple text-white rounded-lg text-sm font-medium text-center"
-            onClick={() => setOpen(false)}
-          >
-            For Companies
-          </a>
-          <a
-            href="#students"
-            className="block px-4 py-2 bg-gold text-black rounded-lg text-sm font-medium text-center"
-            onClick={() => setOpen(false)}
-          >
-            For Students
-          </a>
-        </div>
-      )}
-    </nav>
+    </header>
   );
 }
