@@ -50,8 +50,9 @@ export async function POST(req: NextRequest) {
     }
 
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: process.env.SMTP_FROM,
       to: process.env.NOTIFY_EMAIL,
+      replyTo: body.email,
       subject,
       html,
     });
