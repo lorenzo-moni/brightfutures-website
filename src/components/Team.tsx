@@ -4,7 +4,7 @@ const members = [
     name: "Lorenzo Moni",
     role: "Vetting Lead",
     description: "Incoming SWE Intern @ Bloomberg · CS MSc @ EPFL",
-    tags: ["Data Science & AI", "EPFL Network", "HR Experience"],
+    tags: ["Data Science & AI", "EPFL Network", "HR Processes"],
     accent: "purple" as const,
     photo: "/moni-profile-pic.jpeg",
   },
@@ -22,7 +22,7 @@ const members = [
     description: "Legal Assistant @ SMPL · ChE MSc @ EPFL",
     tags: ["Legal Expertise", "EPFL Network"],
     accent: "purple" as const,
-    photo: "/moni-profile-pic.jpeg",
+    photo: "/hosko-profile-pic.png",
   },
 ];
 

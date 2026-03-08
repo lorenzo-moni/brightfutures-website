@@ -20,7 +20,7 @@ export default function Hero() {
         <div className="text-center max-w-5xl mx-auto">
           {/* Logo */}
           <div className="mb-8 opacity-0 animate-slide-in">
-            <h1 className="text-7xl md:text-8xl font-black mb-4 heading-font">
+            <h1 className="text-5xl md:text-8xl font-black mb-4 heading-font sm:">
               <span className="gradient-text-purple">Bright</span>
               <span className="gradient-text-yellow">Futures</span>
               <span className="text-white">.</span>
@@ -28,13 +28,13 @@ export default function Hero() {
           </div>
 
           {/* Tagline */}
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight opacity-0 animate-slide-in delay-100 heading-font">
+          <h2 className="text-1xl md:text-5xl font-bold mb-6 leading-tight opacity-0 animate-slide-in delay-100 heading-font">
             Bridging <span className="gradient-text-purple">Ambition</span> and{" "}
             <span className="gradient-text-yellow">Industry Demand</span>
           </h2>
 
           {/* Description */}
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto opacity-0 animate-slide-in delay-200">
+          <p className="text-md md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto opacity-0 animate-slide-in delay-200">
             The platform enabling SMEs to secure elite talent through vetted,
             monitored, and bonded university sponsorships.
           </p>
