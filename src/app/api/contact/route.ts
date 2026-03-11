@@ -1,10 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { Pool } from "pg";
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { type } = body;
+
+    if (body.website) {
+      return NextResponse.json({ success: true });
+    }
 
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -47,6 +56,44 @@ export async function POST(req: NextRequest) {
           <tr><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;">Message</td><td style="padding:8px;border-bottom:1px solid #eee;">${body.message || "N/A"}</td></tr>
         </table>
       `;
+    }
+
+    // Save to database
+    const client = await pool.connect();
+    try {
+      if (type === "company") {
+        await client.query(
+          `INSERT INTO company_submissions
+            (company_name, contact_name, email, phone, company_size, industry, message)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [
+            body.companyName,
+            body.contactName,
+            body.email,
+            body.phone || null,
+            body.companySize || null,
+            body.industry || null,
+            body.message || null,
+          ]
+        );
+      } else {
+        await client.query(
+          `INSERT INTO student_submissions
+            (name, email, university, degree, field, graduation_year, message)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [
+            body.name,
+            body.email,
+            body.university,
+            body.degree || null,
+            body.field,
+            body.graduationYear || null,
+            body.message || null,
+          ]
+        );
+      }
+    } finally {
+      client.release();
     }
 
     await transporter.sendMail({

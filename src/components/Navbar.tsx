@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { Menu, X, Briefcase, GraduationCap } from "lucide-react";
 
+function goToForm(type: "company" | "student") {
+  window.dispatchEvent(new CustomEvent("selectFormType", { detail: type }));
+  document.getElementById("register")?.scrollIntoView({ behavior: "smooth" });
+}
+
 const links = [
   { label: "Solution", href: "#solution" },
   { label: "How It Works", href: "#how-it-works" },
@@ -39,20 +44,20 @@ export default function Navbar() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href="#register"
+            <button
+              onClick={() => goToForm("company")}
               className="px-4 py-2 gradient-bg-purple rounded-xl font-bold text-sm hover:scale-105 transition-transform duration-200 glow-purple"
             >
               <Briefcase className="inline-block mr-1 mb-0.5" size={14} />
               Companies
-            </a>
-            <a
-              href="#register"
+            </button>
+            <button
+              onClick={() => goToForm("student")}
               className="px-4 py-2 gradient-bg-yellow rounded-xl font-bold text-sm hover:scale-105 transition-transform duration-200 glow-yellow text-black"
             >
               <GraduationCap className="inline-block mr-1 mb-0.5" size={14} />
               Students
-            </a>
+            </button>
           </div>
 
           {/* Mobile hamburger */}
@@ -79,20 +84,18 @@ export default function Navbar() {
               </a>
             ))}
             <div className="flex gap-3 pt-2 border-t border-white/10">
-              <a
-                href="#register"
-                onClick={() => setOpen(false)}
+              <button
+                onClick={() => { setOpen(false); goToForm("company"); }}
                 className="flex-1 text-center py-2 gradient-bg-purple rounded-xl font-bold text-sm glow-purple"
               >
                 Companies
-              </a>
-              <a
-                href="#register"
-                onClick={() => setOpen(false)}
+              </button>
+              <button
+                onClick={() => { setOpen(false); goToForm("student"); }}
                 className="flex-1 text-center py-2 gradient-bg-yellow rounded-xl font-bold text-sm glow-yellow text-black"
               >
                 Students
-              </a>
+              </button>
             </div>
           </div>
         )}

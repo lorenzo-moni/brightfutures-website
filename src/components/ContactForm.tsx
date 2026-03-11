@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Briefcase, GraduationCap, CheckCircle, TrendingUp, Award } from "lucide-react";
 
 type FormType = "company" | "student";
@@ -38,14 +38,134 @@ const emptyStudent: StudentData = {
 const inputClass =
   "w-full px-5 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-500 form-input";
 
-const selectClass =
-  "w-full px-5 py-4 bg-zinc-900 border border-white/20 rounded-xl text-white form-input";
+const selectBtnClass =
+  "w-full px-5 py-4 bg-zinc-900 border border-white/20 rounded-xl text-white form-input flex items-center justify-between text-left";
+
+type Option = { value: string; label: string };
+
+function CustomSelect({
+  value,
+  onChange,
+  required,
+  placeholder,
+  options,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  required?: boolean;
+  placeholder: string;
+  options: Option[];
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const selected = options.find((o) => o.value === value);
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      {/* Hidden input for native form required validation */}
+      <input
+        tabIndex={-1}
+        required={required}
+        readOnly
+        value={value}
+        aria-hidden="true"
+        className="absolute opacity-0 w-px h-px top-0 left-0"
+      />
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={selectBtnClass}
+      >
+        <span className={selected ? "text-white" : "text-gray-500"}>
+          {selected?.label ?? placeholder}
+        </span>
+        <svg
+          className={`h-4 w-4 text-gray-400 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <ul className="absolute z-50 w-full top-full mt-1 bg-zinc-900 border border-white/20 rounded-xl overflow-hidden shadow-xl">
+          {options.map((opt) => (
+            <li key={opt.value}>
+              <button
+                type="button"
+                onClick={() => { onChange(opt.value); setOpen(false); }}
+                className={`w-full px-5 py-3 text-left hover:bg-white/10 transition-colors ${
+                  value === opt.value ? "text-white font-semibold" : "text-gray-300"
+                }`}
+              >
+                {opt.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+const industryOptions: Option[] = [
+  { value: "manufacturing", label: "Manufacturing" },
+  { value: "technology", label: "Technology" },
+  { value: "engineering", label: "Engineering" },
+  { value: "finance", label: "Finance" },
+  { value: "healthcare", label: "Healthcare" },
+  { value: "other", label: "Other" },
+];
+
+const companySizeOptions: Option[] = [
+  { value: "1-50", label: "1-50 employees" },
+  { value: "51-200", label: "51-200 employees" },
+  { value: "201-500", label: "201-500 employees" },
+  { value: "500+", label: "500+ employees" },
+];
+
+const degreeOptions: Option[] = [
+  { value: "bachelor-current", label: "Current Bachelor's Student" },
+  { value: "bachelor-completed", label: "Bachelor's Completed" },
+  { value: "master-prospective", label: "Prospective Master's Student" },
+  { value: "master-current", label: "Current Master's Student" },
+];
+
+const graduationYearOptions: Option[] = [
+  { value: "2026", label: "2026" },
+  { value: "2027", label: "2027" },
+  { value: "2028", label: "2028" },
+  { value: "2029", label: "2029" },
+  { value: "2030", label: "2030" },
+];
 
 export default function ContactForm() {
   const [formType, setFormType] = useState<FormType>("company");
   const [company, setCompany] = useState<CompanyData>(emptyCompany);
   const [student, setStudent] = useState<StudentData>(emptyStudent);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  useEffect(() => {
+    function onSelectType(e: Event) {
+      const type = (e as CustomEvent<FormType>).detail;
+      setFormType(type);
+      setStatus("idle");
+    }
+    window.addEventListener("selectFormType", onSelectType);
+    return () => window.removeEventListener("selectFormType", onSelectType);
+  }, []);
 
   function switchForm(type: FormType) {
     setFormType(type);
@@ -56,6 +176,13 @@ export default function ContactForm() {
     e.preventDefault();
     setStatus("loading");
     try {
+      const form = e.target as HTMLFormElement;
+      const honeypot = (form.elements.namedItem("website") as HTMLInputElement)?.value;
+      if (honeypot) {
+        setStatus("success");
+        return;
+      }
+
       const payload =
         formType === "company"
           ? { type: "company", ...company }
@@ -94,24 +221,24 @@ export default function ContactForm() {
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-2 inline-flex border border-white/20">
               <button
                 onClick={() => switchForm("company")}
-                className={`px-8 py-4 rounded-xl font-bold transition-all duration-300 ${
+                className={`px-4 py-3 text-sm md:px-8 md:py-4 md:text-base rounded-xl font-bold transition-all duration-300 ${
                   formType === "company"
                     ? "gradient-bg-purple glow-purple text-white"
                     : "text-gray-400 hover:text-white"
                 }`}
               >
-                <Briefcase className="inline-block mr-2 mb-1" size={20} />
+                <Briefcase className="inline-block mr-1 md:mr-2 mb-1" size={16} />
                 For Companies
               </button>
               <button
                 onClick={() => switchForm("student")}
-                className={`px-8 py-4 rounded-xl font-bold transition-all duration-300 ${
+                className={`px-4 py-3 text-sm md:px-8 md:py-4 md:text-base rounded-xl font-bold transition-all duration-300 ${
                   formType === "student"
                     ? "gradient-bg-yellow glow-yellow text-black"
                     : "text-gray-400 hover:text-white"
                 }`}
               >
-                <GraduationCap className="inline-block mr-2 mb-1" size={20} />
+                <GraduationCap className="inline-block mr-1 md:mr-2 mb-1" size={16} />
                 For Students
               </button>
             </div>
@@ -143,6 +270,15 @@ export default function ContactForm() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot: hidden from humans, bots will fill it */}
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }}
+                />
                 {formType === "company" ? (
                   <>
                     <h3 className="text-3xl font-bold mb-6 gradient-text-purple heading-font">
@@ -201,35 +337,23 @@ export default function ContactForm() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-semibold mb-2 text-gray-300">Industry *</label>
-                        <select
+                        <CustomSelect
                           required
                           value={company.industry}
-                          onChange={(e) => setCompany({ ...company, industry: e.target.value })}
-                          className={selectClass}
-                        >
-                          <option value="">Select Industry</option>
-                          <option value="manufacturing">Manufacturing</option>
-                          <option value="technology">Technology</option>
-                          <option value="engineering">Engineering</option>
-                          <option value="finance">Finance</option>
-                          <option value="healthcare">Healthcare</option>
-                          <option value="other">Other</option>
-                        </select>
+                          onChange={(v) => setCompany({ ...company, industry: v })}
+                          placeholder="Select Industry"
+                          options={industryOptions}
+                        />
                       </div>
                       <div>
                         <label className="block text-sm font-semibold mb-2 text-gray-300">Company Size *</label>
-                        <select
+                        <CustomSelect
                           required
                           value={company.companySize}
-                          onChange={(e) => setCompany({ ...company, companySize: e.target.value })}
-                          className={selectClass}
-                        >
-                          <option value="">Select Size</option>
-                          <option value="1-50">1-50 employees</option>
-                          <option value="51-200">51-200 employees</option>
-                          <option value="201-500">201-500 employees</option>
-                          <option value="500+">500+ employees</option>
-                        </select>
+                          onChange={(v) => setCompany({ ...company, companySize: v })}
+                          placeholder="Select Size"
+                          options={companySizeOptions}
+                        />
                       </div>
                     </div>
 
@@ -289,18 +413,13 @@ export default function ContactForm() {
                       </div>
                       <div>
                         <label className="block text-sm font-semibold mb-2 text-gray-300">Degree Level *</label>
-                        <select
+                        <CustomSelect
                           required
                           value={student.degree}
-                          onChange={(e) => setStudent({ ...student, degree: e.target.value })}
-                          className={selectClass}
-                        >
-                          <option value="">Select Degree</option>
-                          <option value="bachelor-current">Current Bachelor&apos;s Student</option>
-                          <option value="bachelor-completed">Bachelor&apos;s Completed</option>
-                          <option value="master-prospective">Prospective Master&apos;s Student</option>
-                          <option value="master-current">Current Master&apos;s Student</option>
-                        </select>
+                          onChange={(v) => setStudent({ ...student, degree: v })}
+                          placeholder="Select Degree"
+                          options={degreeOptions}
+                        />
                       </div>
                     </div>
 
@@ -318,19 +437,13 @@ export default function ContactForm() {
                       </div>
                       <div>
                         <label className="block text-sm font-semibold mb-2 text-gray-300">Expected Graduation Year *</label>
-                        <select
+                        <CustomSelect
                           required
                           value={student.graduationYear}
-                          onChange={(e) => setStudent({ ...student, graduationYear: e.target.value })}
-                          className={selectClass}
-                        >
-                          <option value="">Select Year</option>
-                          <option value="2026">2026</option>
-                          <option value="2027">2027</option>
-                          <option value="2028">2028</option>
-                          <option value="2029">2029</option>
-                          <option value="2030">2030</option>
-                        </select>
+                          onChange={(v) => setStudent({ ...student, graduationYear: v })}
+                          placeholder="Select Year"
+                          options={graduationYearOptions}
+                        />
                       </div>
                     </div>
 

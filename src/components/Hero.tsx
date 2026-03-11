@@ -1,4 +1,11 @@
+"use client";
+
 import { Briefcase, GraduationCap } from "lucide-react";
+
+function goToForm(type: "company" | "student") {
+  window.dispatchEvent(new CustomEvent("selectFormType", { detail: type }));
+  document.getElementById("register")?.scrollIntoView({ behavior: "smooth" });
+}
 
 export default function Hero() {
   return (
@@ -41,20 +48,20 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 opacity-0 animate-slide-in delay-300">
-            <a
-              href="#register"
-              className="px-10 py-5 gradient-bg-purple rounded-xl font-bold text-lg hover:scale-105 transition-transform duration-300 glow-purple"
+            <button
+              onClick={() => goToForm("company")}
+              className="px-6 py-4 text-base md:px-10 md:py-5 md:text-lg gradient-bg-purple rounded-xl font-bold hover:scale-105 transition-transform duration-300 glow-purple"
             >
-              <Briefcase className="inline-block mr-2 mb-1" size={24} />
+              <Briefcase className="inline-block mr-2 mb-1" size={20} />
               I&apos;m a Company
-            </a>
-            <a
-              href="#register"
-              className="px-10 py-5 gradient-bg-yellow rounded-xl font-bold text-lg hover:scale-105 transition-transform duration-300 glow-yellow text-black"
+            </button>
+            <button
+              onClick={() => goToForm("student")}
+              className="px-6 py-4 text-base md:px-10 md:py-5 md:text-lg gradient-bg-yellow rounded-xl font-bold hover:scale-105 transition-transform duration-300 glow-yellow text-black"
             >
-              <GraduationCap className="inline-block mr-2 mb-1" size={24} />
+              <GraduationCap className="inline-block mr-2 mb-1" size={20} />
               I&apos;m a Student
-            </a>
+            </button>
           </div>
 
           {/* Stats */}
